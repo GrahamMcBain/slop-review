@@ -1,0 +1,30 @@
+name: "Slop Review"
+description: "Posts a humorous, overconfident PR review. Optional OpenAI integration."
+author: "Graham McBain"
+branding:
+  color: "purple"
+  icon: "message-square"
+
+inputs:
+  github_token:
+    description: "GitHub token with permission to comment on PRs (defaults to GITHUB_TOKEN)"
+    required: false
+  openai_api_key:
+    description: "OpenAI API key to generate slop (optional). If omitted, falls back to built-in jokes."
+    required: false
+  model:
+    description: "OpenAI chat model to use"
+    default: "gpt-4o-mini"
+    required: false
+  temperature:
+    description: "OpenAI temperature"
+    default: "0.95"
+    required: false
+  max_files:
+    description: "How many files to include in the summary"
+    default: "10"
+    required: false
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
