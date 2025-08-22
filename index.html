@@ -140,6 +140,7 @@
         <span>Slop Review</span>
       </a>
       <div>
+        <a href="#install">Install</a>
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
         <a href="#pricing">Pricing</a>
@@ -154,20 +155,11 @@
         <span class="eyebrow"><span class="spin"></span> Public Alpha</span>
         <h1>Fight Slop with Slop.</h1>
         <p class="sub">When a pull request arrives full of highly questionable AI code, Slop Review replies with exquisitely crafted, authoritative-sounding AI slop of its own. The circle is complete.</p>
-        <div class="cta">
-          <a class="btn primary" href="#pricing">Install Slop Review</a>
-          <a class="btn" href="#features">Read the Nonsense</a>
-        </div>
-        <div class="badges" style="margin-top:14px">
-          <span class="badge">Zero regrets architecture</span>
-          <span class="badge">Big‑O vibes only</span>
-          <span class="badge">99.99% confidence (subjective)</span>
-        </div>
       </div>
       <div class="hero-card">
         <div class="marquee"><span>BREAKING: Now 100% more Slop • Now with enterprise-grade hand‑waving • Built on the latest buzzwords • ISO 9001: Slop Management • SOC‑2 (Sort Of Compliant, too) • </span></div>
         <div class="toolbar">
-          <a class="btn primary" href="#pricing">Install Slop Review</a>
+          <a class="btn primary" href="#install">Install Slop Review</a>
           <a class="btn" href="#features">Read the Nonsense</a>
           <span class="badge">Zero regrets architecture</span>
           <span class="badge">Big‑O vibes only</span>
@@ -236,6 +228,52 @@ slop:
         <div class="card"><p>“It told me our Python wasn’t strongly typed <i>enough</i> and I believed it.”<br><span class="muted">— CTO, CryptoKite</span></p></div>
         <div class="card"><p>“Finally, a tool that matches the energy of our code.”<br><span class="muted">— VP Eng, HasteStack</span></p></div>
         <div class="card"><p>“12/10 would rubber‑duck with again.”<br><span class="muted">— Staff Eng, YakWare</span></p></div>
+      </div>
+    </section>
+
+    <section id="install" class="section">
+      <h2>Install in 60 seconds</h2>
+      <p class="muted">Add a small workflow to your repo. Optional: set an OpenAI key for fancier slop.</p>
+      <div class="steps">
+        <div class="step">
+          <strong>1. Create workflow</strong>
+          <pre class="code"><code>name: Slop Review
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  slop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Slop Review
+        uses: GrahamMcBain/slop-review@v1
+        with:
+          model: gpt-4o-mini
+          temperature: '0.95'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # optional
+</code></pre>
+        </div>
+        <div class="step">
+          <strong>2. (Optional) add OPENAI_API_KEY</strong>
+          <div class="muted">Repo → Settings → Secrets and variables → Actions → New secret → <code>OPENAI_API_KEY</code>.</div>
+        </div>
+        <div class="step">
+          <strong>3. Open a PR</strong>
+          <div class="muted">The action posts a confident, obviously‑AI review. Idempotent: it updates its own comment on changes.</div>
+        </div>
+      </div>
+      <div class="cta" style="margin-top:18px">
+        <a class="btn primary" href="https://github.com/GrahamMcBain/slop-review" target="_blank" rel="noopener">View on GitHub</a>
+        <a class="btn" href="#how">How it works</a>
       </div>
     </section>
 
