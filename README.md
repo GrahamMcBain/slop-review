@@ -1,6 +1,8 @@
 # Slop Review
 
-Fight Slop with Slop. A single-file, static landing page hosted anywhere.
+[![GitHub Marketplace](https://img.shields.io/badge/GitHub%20Marketplace-Action-blue?logo=github)](https://github.com/GrahamMcBain/slop-review)
+
+Fight Slop with Slop. A reusable GitHub Action that posts humorous, overconfident PR reviews. Optional OpenAI integration. Also ships with a landing page you can host anywhere.
 
 ## Local development
 
