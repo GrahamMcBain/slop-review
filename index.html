@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0b0b12">
   <title>Slop Review — Fight Slop with Slop</title>
-  <meta name="description" content="Slop Review reviews your pull requests with exquisitely crafted AI-generated slop. Fight Slop with Slop.">
+  <meta name="description" content="A GitHub Action that reviews your pull requests with exquisitely confident AI slop.">
   <link rel="canonical" href="https://slop-review.vercel.app/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Slop Review">
   <meta property="og:title" content="Slop Review — Fight Slop with Slop">
-  <meta property="og:description" content="A reusable GitHub Action that comments on PRs with confident, funny AI slop. Optional OpenAI integration.">
+  <meta property="og:description" content="A GitHub Action that comments on PRs with confident, funny AI slop. Optional OpenAI integration.">
   <meta property="og:url" content="https://slop-review.vercel.app/">
   <meta property="og:image" content="https://og-image.vercel.app/Slop%20Review.png?theme=dark&md=1&fontSize=110px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Fv1662130559%2Fassets%2Fog-vercel%2Fog-image.png&widths=1200&heights=630&caption=Fight%20Slop%20with%20Slop">
   <meta name="twitter:card" content="summary_large_image">
@@ -20,27 +20,25 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg: #0b0b12;
-      --panel: rgba(255,255,255,0.06);
-      --panel-strong: rgba(255,255,255,0.12);
       --text: #e8e9f0;
       --muted: #a9aec6;
+      --panel: rgba(255,255,255,0.06);
+      --panel-strong: rgba(255,255,255,0.12);
       --accent: #9b5cff;
       --accent-2: #2dd4bf;
       --accent-3: #ff4ecd;
-      --glow: 0 0 40px rgba(155,92,255,0.55), 0 0 70px rgba(45,212,191,0.25);
       --radius: 16px;
     }
-
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
       margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color: var(--text);
       background: radial-gradient(1200px 800px at 80% -10%, rgba(255,78,205,0.15), transparent),
                   radial-gradient(900px 700px at 10% 0%, rgba(45,212,191,0.18), transparent),
@@ -48,262 +46,60 @@
                   var(--bg);
       overflow-x: hidden;
     }
-
-    .grid-bg {
-      position: fixed; inset: 0; pointer-events: none; opacity: 0.18; mix-blend-mode: screen;
-      background-image: linear-gradient(to right, rgba(255,255,255,0.09) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255,255,255,0.09) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: radial-gradient(circle at 50% 0%, black 10%, transparent 70%);
-    }
-
     header { position: sticky; top: 0; z-index: 10; backdrop-filter: saturate(120%) blur(8px); background: rgba(11,11,18,0.6); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .nav {
-      max-width: 1120px; margin: 0 auto; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
-    }
+    .nav { max-width: 980px; margin: 0 auto; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
     .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-weight: 800; letter-spacing: 0.2px; }
-    .logo {
-      width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; color: white;
-      background: conic-gradient(from 210deg, var(--accent), var(--accent-3), var(--accent-2), var(--accent));
-      box-shadow: var(--glow);
-    }
-    .nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-weight: 500; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: conic-gradient(from 210deg, var(--accent), var(--accent-3), var(--accent-2), var(--accent)); }
+    .nav a { color: var(--muted); text-decoration: none; margin-left: 16px; font-weight: 600; }
     .nav a:hover { color: var(--text); }
 
-    .container { max-width: 1120px; margin: 0 auto; padding: 48px 20px; }
+    .container { max-width: 980px; margin: 0 auto; padding: 56px 18px 80px; }
 
-    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 36px; align-items: center; padding: 40px 0 28px; }
-    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+    .hero { text-align: left; padding: 40px 0 10px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 700 11px/1 Inter; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-2); background: rgba(45,212,191,0.12); border: 1px solid rgba(45,212,191,0.35); padding: 8px 10px; border-radius: 999px; }
+    h1 { font-family: "Space Grotesk", Inter, sans-serif; font-weight: 800; font-size: clamp(40px, 8vw, 86px); line-height: 0.98; margin: 16px 0 12px; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); font-size: clamp(16px, 2.2vw, 18px); max-width: 48ch; }
 
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px; font: 600 12px/1.2 Inter; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-2);
-      background: rgba(45,212,191,0.12); border: 1px solid rgba(45,212,191,0.35); padding: 10px 12px; border-radius: 999px;
-    }
-
-    h1 { font-family: "Space Grotesk", Inter, sans-serif; font-weight: 800; font-size: clamp(36px, 6.6vw, 72px); line-height: 1.02; margin: 16px 0 14px; letter-spacing: -0.02em; }
-    .sub { color: var(--muted); font-size: clamp(16px, 2.2vw, 18px); max-width: 44ch; }
-
-    .cta { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--panel-strong); text-decoration: none; font-weight: 700; color: var(--text);
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-    }
-    .btn.primary {
-      background: linear-gradient(135deg, var(--accent-3), var(--accent)); color: white; border: none; box-shadow: 0 10px 30px rgba(155,92,255,0.45), 0 4px 16px rgba(255,78,205,0.25);
-    }
+    .cta { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--panel-strong); text-decoration: none; font-weight: 800; color: var(--text); background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); }
+    .btn.primary { background: linear-gradient(135deg, var(--accent-3), var(--accent)); color: white; border: none; box-shadow: 0 10px 30px rgba(155,92,255,0.35), 0 4px 16px rgba(255,78,205,0.20); }
     .btn.primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
-    .btn:hover { border-color: rgba(255,255,255,0.3); }
 
-    .hero-card {
-      position: relative; border-radius: var(--radius); padding: 24px; background: radial-gradient(120% 120% at 80% 0%, rgba(255,78,205,0.12), rgba(155,92,255,0.10)), var(--panel);
-      border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    footer { padding: 30px 18px 54px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.18); }
+    .foot { max-width: 980px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+    /* Made with Love & [Amp logo] */
+    .amp-badge {
+      position: fixed; right: 16px; bottom: 16px; z-index: 20;
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; color: #fff;
+      padding: 10px 12px; border-radius: 999px; background: linear-gradient(135deg, rgba(255,78,205,0.7), rgba(155,92,255,0.8));
+      border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 6px 20px rgba(0,0,0,0.35);
     }
-    .marquee { white-space: nowrap; overflow: hidden; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.2); padding: 8px 0; color: #ffe6f7; background: rgba(255,78,205,0.06); font-weight: 700; font-size: 14px; }
-    .marquee span { display: inline-block; padding-left: 100%; animation: scroll 16s linear infinite; }
-    @keyframes scroll { to { transform: translateX(-100%); } }
-
-    .code {
-      margin-top: 16px; background: #0f0f19; border: 1px solid rgba(255,255,255,0.10); border-radius: 12px; padding: 14px; overflow: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 13px; color: #e7e7f3;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-    }
-
-    .section { padding: 56px 0; }
-    .section h2 { font-family: "Space Grotesk", Inter, sans-serif; font-size: clamp(26px, 3.4vw, 36px); margin: 0 0 12px; }
-    .muted { color: var(--muted); }
-
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
-    @media (max-width: 1000px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
-    .card { background: var(--panel); border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; padding: 18px; }
-    .card h3 { margin: 6px 0 6px; font-size: 18px; }
-
-    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 16px; }
-    @media (max-width: 900px) { .steps { grid-template-columns: 1fr; } }
-    .step { padding: 18px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.10); }
-
-    .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-    .badge { font-size: 12px; padding: 8px 10px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); color: #d8def5; }
-
-    .pricing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 16px; }
-    @media (max-width: 900px) { .pricing { grid-template-columns: 1fr; } }
-    .price-card { padding: 22px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.10); background: radial-gradient(120% 120% at 100% 0%, rgba(45,212,191,0.12), rgba(255,255,255,0.04)); }
-    .price { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; }
-
-    footer { padding: 32px 20px 60px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.2); }
-    .foot { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-
-    .spin {
-      display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
-      background: conic-gradient(var(--accent-2), var(--accent-3), var(--accent));
-      -webkit-mask: radial-gradient(circle 6px, transparent 6px, black 7px);
-      animation: spin 2.4s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .amp-badge img { height: 18px; width: auto; display: inline-block; vertical-align: middle; }
+    .amp-badge:hover { filter: brightness(1.05); transform: translateY(-1px); }
   </style>
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='1' y2='0'%3E%3Cstop stop-color='%239b5cff'/%3E%3Cstop offset='1' stop-color='%23ff4ecd'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='128' height='128' rx='28' fill='url(%23g)'/%3E%3Ctext x='64' y='82' font-family='Inter, sans-serif' font-size='64' text-anchor='middle' fill='white' font-weight='700'%3ESR%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
-  <div class="grid-bg"></div>
   <header>
     <nav class="nav">
-      <a class="brand" href="#">
-        <span class="logo">🫠</span>
-        <span>Slop Review</span>
-      </a>
+      <a class="brand" href="#"><span class="logo">🫠</span><span>Slop Review</span></a>
       <div>
-        <a href="#install">Install</a>
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
         <a href="https://github.com/marketplace/actions/slop-review" target="_blank" rel="noopener">Marketplace</a>
+        <a href="https://github.com/GrahamMcBain/slop-review" target="_blank" rel="noopener">GitHub</a>
       </div>
     </nav>
   </header>
 
   <main class="container">
     <section class="hero">
-      <div>
-        <span class="eyebrow"><span class="spin"></span> Public Alpha</span>
-        <h1>Fight Slop with Slop.</h1>
-        <p class="sub">When a pull request arrives full of highly questionable AI code, Slop Review replies with exquisitely crafted, authoritative-sounding AI slop of its own. The circle is complete.</p>
-      </div>
-      <div class="hero-card">
-        <div class="marquee"><span>BREAKING: Now 100% more Slop • Now with enterprise-grade hand‑waving • Built on the latest buzzwords • ISO 9001: Slop Management • SOC‑2 (Sort Of Compliant, too) • </span></div>
-        <div class="toolbar">
-          <a class="btn primary" href="https://github.com/marketplace/actions/slop-review" target="_blank" rel="noopener">Install on GitHub</a>
-          <a class="btn" href="#features">Read the Nonsense</a>
-          <span class="badge">Zero regrets architecture</span>
-          <span class="badge">Big‑O vibes only</span>
-          <span class="badge">99.99% confidence (subjective)</span>
-        </div>
-        <pre class="code"><code># .sloprc.yml
-slop:
-  reviewer: "GrandioseArchitectV12"
-  tone: "confident, vaguely disappointed"
-  nitpicks:
-    - "rename to follow the Nonexistent Spec™"
-    - "optimize for asymptotic aesthetics"
-    - "re-architect to micro‑macro‑services"
-  block_phrases:
-    - "as per my previous hallucination"
-    - "industry best practices suggest"
-  length: "novella"
-  emojis: true
-        </code></pre>
-      </div>
-    </section>
-
-    <section id="features" class="section">
-      <h2>What makes our slop deluxe?</h2>
-      <p class="muted">Precision‑engineered nonsense that reads like a promotion packet.</p>
-      <div class="cards">
-        <div class="card">
-          <h3>Line‑by‑line Lorem Expertise</h3>
-          <p>Highlights every line with bulletproof reasoning like “this is O(mystique)” and “consider an <i>idempotent yak</i>.”</p>
-        </div>
-        <div class="card">
-          <h3>Tone‑Shifted Nitpicks</h3>
-          <p>From chill to <i>principal‑engineer‑who</i>—choose your reviewer’s aura with one config flag.</p>
-        </div>
-        <div class="card">
-          <h3>Compliance Theater</h3>
-          <p>References non‑existent standards with real footnote energy. Nobody checks, everybody nods.</p>
-        </div>
-        <div class="card">
-          <h3>Latency‑Driven Pedantry</h3>
-          <p>Finds a micro‑optimization for your README badges. Performance! Somewhere.</p>
-        </div>
-        <div class="card">
-          <h3>Buzzword Infusion</h3>
-          <p>Now with serverless edge quantum monorepo sharding. On brand, on point, on vibes.</p>
-        </div>
-        <div class="card">
-          <h3>Auto‑Close™</h3>
-          <p>Optionally closes the PR after delivering a 14‑paragraph think‑piece on coding fonts.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="how" class="section">
-      <h2>How it works</h2>
-      <div class="steps">
-        <div class="step"><strong>1. PR lands, suspiciously shiny.</strong><br><span class="muted">The code looks like it was written by a blender. Intriguing.</span></div>
-        <div class="step"><strong>2. Slop Review engages.</strong><br><span class="muted">Responds instantly with confident hand‑waving and bespoke acronyms.</span></div>
-        <div class="step"><strong>3. Laughter. Clarity. Closure.</strong><br><span class="muted">Team bonds over the chaos. You merge or you don’t. Either way, serenity.</span></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>People are saying things</h2>
-      <div class="cards">
-        <div class="card"><p>“It told me our Python wasn’t strongly typed <i>enough</i> and I believed it.”<br><span class="muted">— CTO, CryptoKite</span></p></div>
-        <div class="card"><p>“Finally, a tool that matches the energy of our code.”<br><span class="muted">— VP Eng, HasteStack</span></p></div>
-        <div class="card"><p>“12/10 would rubber‑duck with again.”<br><span class="muted">— Staff Eng, YakWare</span></p></div>
-      </div>
-    </section>
-
-    <section id="install" class="section">
-      <h2>Install in 60 seconds</h2>
-      <p class="muted">Add a small workflow to your repo. Optional: set an OpenAI key for fancier slop.</p>
-      <div class="steps">
-        <div class="step">
-          <strong>1. Create workflow</strong>
-          <pre class="code"><code>name: Slop Review
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-permissions:
-  contents: read
-  pull-requests: write
-jobs:
-  slop:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Slop Review
-        uses: GrahamMcBain/slop-review@v1
-        with:
-          model: gpt-4o-mini
-          temperature: '0.95'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # optional
-</code></pre>
-        </div>
-        <div class="step">
-          <strong>2. (Optional) add OPENAI_API_KEY</strong>
-          <div class="muted">Repo → Settings → Secrets and variables → Actions → New secret → <code>OPENAI_API_KEY</code>.</div>
-        </div>
-        <div class="step">
-          <strong>3. Open a PR</strong>
-          <div class="muted">The action posts a confident, obviously‑AI review. Idempotent: it updates its own comment on changes.</div>
-        </div>
-      </div>
-      <div class="cta" style="margin-top:18px">
-        <a class="btn primary" href="https://github.com/marketplace/actions/slop-review" target="_blank" rel="noopener">Get it on GitHub Marketplace</a>
+      <span class="eyebrow">Public Alpha</span>
+      <h1>Fight Slop with Slop.</h1>
+      <p class="sub">A tiny GitHub Action that replies to your PRs with exquisitely confident AI slop. Install it, laugh, move on.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/marketplace/actions/slop-review" target="_blank" rel="noopener">Install on GitHub Marketplace</a>
         <a class="btn" href="https://github.com/GrahamMcBain/slop-review" target="_blank" rel="noopener">View on GitHub</a>
-        <a class="btn" href="#how">How it works</a>
-      </div>
-    </section>
-
-    <section id="pricing" class="section">
-      <h2>Pricing</h2>
-      <p class="muted">Free during public alpha. Pay later when the slop becomes artisanal.</p>
-      <div class="pricing">
-        <div class="price-card">
-          <div class="price">$0</div>
-          <p><strong>Community Slop</strong> — Unlimited sarcastic audits. Some adverbs included.</p>
-          <a class="btn primary" href="#">Install Free</a>
-        </div>
-        <div class="price-card">
-          <div class="price">Let’s talk</div>
-          <p><strong>Enterprise Slop</strong> — SSO (Slop Sign‑On), Compliance Theater Pro, Dedicated hand‑waver.</p>
-          <a class="btn" href="#">Contact Sales*</a>
-          <p class="muted" style="margin-top:8px">*We will reply with a 5‑page PDF of vibes.</p>
-        </div>
       </div>
     </section>
   </main>
@@ -315,24 +111,13 @@ jobs:
     </div>
   </footer>
 
+  <a class="amp-badge" href="https://ampcode.com" target="_blank" rel="noopener" title="Made with Love & Amp">
+    <span>Made with Love &</span>
+    <img src="assets/amp-dark.png" alt="Amp" />
+  </a>
+
   <script>
-    // Dynamic year + rotating slopisms for a bit of spice
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    const slogans = [
-      'As per my previous hallucination…',
-      'Refactor to micro‑macro‑services.',
-      'Big‑O? Big oh yes.',
-      'Edge‑ready. Center‑curious.',
-      'Now with 200% more confidence.',
-      'Powered by vibes, grounded in none.'
-    ];
-
-    const marquee = document.querySelector('.marquee span');
-    setInterval(() => {
-      const s = slogans[Math.floor(Math.random() * slogans.length)];
-      marquee.textContent = `BREAKING: ${s} • ` + marquee.textContent;
-    }, 3500);
   </script>
 </body>
 </html>
