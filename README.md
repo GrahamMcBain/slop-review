@@ -22,6 +22,11 @@ Open http://127.0.0.1:8080
 
 Use it in any repo to comment on PRs with confident slop. Optional OpenAI integration.
 
+Examples you can copy:
+- [examples/basic.yml](examples/basic.yml)
+- [examples/with-openai.yml](examples/with-openai.yml)
+- [examples/tuned.yml](examples/tuned.yml)
+
 Example workflow:
 
 ```yaml
